@@ -1,16 +1,16 @@
 import { FunctionComponent, useCallback, useEffect, useRef } from "react";
+import useAudioContext from "../hooks/useAudioContext";
 
 interface FrequencyVisualizerProps {
-  context: AudioContext;
   input: AudioNode;
   fftSize?: number;
 }
 
 const FrequencyVisualizer: FunctionComponent<FrequencyVisualizerProps> = ({
-  context,
   input,
   fftSize = 128,
 }) => {
+  const context = useAudioContext();
   const canvasRef = useRef<HTMLCanvasElement>(null!);
   const { current: analyser } = useRef(new AnalyserNode(context, { fftSize }));
   const bufferLength = analyser.frequencyBinCount;

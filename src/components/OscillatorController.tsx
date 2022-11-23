@@ -1,16 +1,16 @@
 import { FunctionComponent, ReactNode, useEffect, useState } from "react";
+import useAudioContext from "../hooks/useAudioContext";
 import useOscillator from "../hooks/useOscillator";
 import LogarithmicRange from "./LogarithmicRange";
 
 interface OscillatorControllerProps {
-  context: AudioContext;
   children?: (node: AudioNode) => ReactNode;
 }
 
 const OscillatorController: FunctionComponent<OscillatorControllerProps> = ({
   children,
-  context,
 }) => {
+  const context = useAudioContext();
   const { oscillator, start, stop } = useOscillator(context);
   const [isPlaying, setIsPlaying] = useState(false);
   const [hertz, setHertz] = useState(440);
@@ -20,12 +20,12 @@ const OscillatorController: FunctionComponent<OscillatorControllerProps> = ({
   }, [oscillator, hertz]);
 
   return (
-    <>
+    <div>
       <button
         onClick={() => {
           (isPlaying ? stop : start)();
 
-          return setIsPlaying(isPlaying => !isPlaying);
+          return setIsPlaying((isPlaying) => !isPlaying);
         }}
       >
         {isPlaying ? "Pause" : "Play"}
@@ -40,7 +40,7 @@ const OscillatorController: FunctionComponent<OscillatorControllerProps> = ({
         {`Hz: ${hertz}`}
       </label>
       {children ? children(oscillator) : null}
-    </>
+    </div>
   );
 };
 

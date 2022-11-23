@@ -54,8 +54,8 @@ const LogarithmicRange: FunctionComponent<LogarithmicRangeProps> = ({
   minimumPosition = 0,
   maximumPosition = 100,
   defaultValue = 0,
-  minimumValue = 5,
-  maximumValue = 1600,
+  minimumValue = 0,
+  maximumValue = 10000,
 }) => {
   const [position, setPosition] = useState(
     calculatePosition(

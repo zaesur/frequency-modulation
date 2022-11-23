@@ -5,12 +5,12 @@ import OscillatorController from "./OscillatorController";
 
 const App: FunctionComponent = () => (
   <AudioContextProvider value={new AudioContext()}>
-    <OscillatorController>
-      {(node) => <FrequencyVisualizer input={node} />}
-    </OscillatorController>
-    <OscillatorController>
-      {(node) => <FrequencyVisualizer input={node} />}
-    </OscillatorController>
+    <FrequencyVisualizer>
+      {(target) => <OscillatorController target={target} />}
+    </FrequencyVisualizer>
+    <FrequencyVisualizer>
+      {(target) => <OscillatorController target={target} />}
+    </FrequencyVisualizer>
   </AudioContextProvider>
 );
 

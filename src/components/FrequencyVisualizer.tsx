@@ -1,20 +1,27 @@
-import { FunctionComponent, useCallback, useEffect, useRef } from "react";
+import {
+  FunctionComponent,
+  ReactNode,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+} from "react";
 import useAudioContext from "../hooks/useAudioContext";
 
 interface FrequencyVisualizerProps {
-  input: AudioNode;
   fftSize?: number;
+  children: (target: AnalyserNode) => ReactNode;
 }
 
 const FrequencyVisualizer: FunctionComponent<FrequencyVisualizerProps> = ({
-  input,
   fftSize = 128,
+  children,
 }) => {
   const context = useAudioContext();
   const canvasRef = useRef<HTMLCanvasElement>(null!);
-  const { current: analyser } = useRef(new AnalyserNode(context, { fftSize }));
+  const analyser = useMemo(() => new AnalyserNode(context), [fftSize]);
   const bufferLength = analyser.frequencyBinCount;
-  const { current: data } = useRef(new Uint8Array(bufferLength));
+  const data = useMemo(() => new Uint8Array(bufferLength), [bufferLength]);
 
   const draw = useCallback(() => {
     requestAnimationFrame(draw);
@@ -49,18 +56,22 @@ const FrequencyVisualizer: FunctionComponent<FrequencyVisualizerProps> = ({
 
     canvasContext.lineTo(canvas.width, canvas.height / 2);
     canvasContext.stroke();
-  }, []);
+  }, [data, analyser, bufferLength]);
 
   useEffect(() => {
-    input.connect(analyser);
     draw();
 
     return () => {
-      input.disconnect(analyser);
-    };
-  }, [input, draw]);
+      requestAnimationFrame(() => {});
+    }
+  }, [draw]);
 
-  return <canvas ref={canvasRef} />;
+  return (
+    <div>
+      {children(analyser)}
+      <canvas ref={canvasRef} />
+    </div>
+  );
 };
 
 export default FrequencyVisualizer;

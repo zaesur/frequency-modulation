@@ -19,12 +19,15 @@ const OscillatorController: FunctionComponent<OscillatorControllerProps> = ({
 
   return (
     <>
-      <LogarithmicRange
-        minimumValue={20}
-        maximumValue={20000}
-        defaultValue={hertz}
-        onChange={setHertz}
-      />
+      <label>
+        <LogarithmicRange
+          minimumValue={20}
+          maximumValue={20000}
+          defaultValue={hertz}
+          onChange={setHertz}
+        />
+        {`Hz: ${hertz}`}
+      </label>
       <FrequencyVisualizer context={context} input={oscillator} />
     </>
   );

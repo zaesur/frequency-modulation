@@ -58,7 +58,7 @@ const FrequencyVisualizer: FunctionComponent<FrequencyVisualizerProps> = ({
     return () => {
       input.disconnect(analyser);
     };
-  }, [draw]);
+  }, [input, draw]);
 
   return <canvas ref={canvasRef} />;
 };

@@ -7,12 +7,16 @@ const App: FunctionComponent = () => {
 
   return (
     <>
-      <OscillatorController context={context}>
-        {(node) => <FrequencyVisualizer context={context} input={node} />}
-      </OscillatorController>
-      <OscillatorController context={context}>
-        {(node) => <FrequencyVisualizer context={context} input={node} />}
-      </OscillatorController>
+      <div>
+        <OscillatorController context={context}>
+          {(node) => <FrequencyVisualizer context={context} input={node} />}
+        </OscillatorController>
+      </div>
+      <div>
+        <OscillatorController context={context}>
+          {(node) => <FrequencyVisualizer context={context} input={node} />}
+        </OscillatorController>
+      </div>
     </>
   );
 };

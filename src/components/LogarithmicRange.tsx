@@ -23,8 +23,11 @@ const LogarithmicRange: FunctionComponent<LogarithmicRangeProps> = ({
   minimumValue = 5,
   maximumValue = 1600,
 }) => {
+  const scale =
+    (Math.log(maximumValue) - Math.log(minimumValue)) /
+    (maximumPosition - minimumPosition);
   const initialPosition =
-    minimumPosition + (Math.log(defaultValue) - Math.log(minimumValue));
+    (Math.log(defaultValue) - Math.log(minimumValue)) / scale + minimumPosition;
   const [position, setPosition] = useState(initialPosition);
 
   const handleChange = useCallback<ChangeEventHandler<HTMLInputElement>>(
@@ -36,9 +39,6 @@ const LogarithmicRange: FunctionComponent<LogarithmicRangeProps> = ({
   );
 
   useEffect(() => {
-    const scale =
-      (Math.log(maximumValue) - Math.log(minimumValue)) /
-      (maximumPosition - minimumPosition);
     const value = Math.round(
       Math.exp((position - minimumPosition) * scale + Math.log(minimumValue))
     );

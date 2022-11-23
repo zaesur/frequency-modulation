@@ -6,6 +6,40 @@ import {
   useState,
 } from "react";
 
+const calculatePosition = (
+  value: number,
+  minimumPosition: number,
+  maximumPosition: number,
+  minimumValue: number,
+  maximumValue: number
+): number => {
+  const scale =
+    (Math.log(maximumValue) - Math.log(minimumValue)) /
+    (maximumPosition - minimumPosition);
+  const position = Math.round(
+    (Math.log(value) - Math.log(minimumValue)) / scale + minimumPosition
+  );
+
+  return position;
+};
+
+const calculateValue = (
+  position: number,
+  minimumPosition: number,
+  maximumPosition: number,
+  minimumValue: number,
+  maximumValue: number
+): number => {
+  const scale =
+    (Math.log(maximumValue) - Math.log(minimumValue)) /
+    (maximumPosition - minimumPosition);
+  const value = Math.round(
+    Math.exp((position - minimumPosition) * scale + Math.log(minimumValue))
+  );
+
+  return value;
+};
+
 interface LogarithmicRangeProps {
   onChange: (value: number, position: number) => void;
   minimumPosition?: number;
@@ -23,12 +57,15 @@ const LogarithmicRange: FunctionComponent<LogarithmicRangeProps> = ({
   minimumValue = 5,
   maximumValue = 1600,
 }) => {
-  const scale =
-    (Math.log(maximumValue) - Math.log(minimumValue)) /
-    (maximumPosition - minimumPosition);
-  const initialPosition =
-    (Math.log(defaultValue) - Math.log(minimumValue)) / scale + minimumPosition;
-  const [position, setPosition] = useState(initialPosition);
+  const [position, setPosition] = useState(
+    calculatePosition(
+      defaultValue,
+      minimumPosition,
+      maximumPosition,
+      minimumValue,
+      maximumValue
+    )
+  );
 
   const handleChange = useCallback<ChangeEventHandler<HTMLInputElement>>(
     (event) => {
@@ -39,8 +76,12 @@ const LogarithmicRange: FunctionComponent<LogarithmicRangeProps> = ({
   );
 
   useEffect(() => {
-    const value = Math.round(
-      Math.exp((position - minimumPosition) * scale + Math.log(minimumValue))
+    const value = calculateValue(
+      position,
+      minimumPosition,
+      maximumPosition,
+      minimumValue,
+      maximumValue
     );
 
     onChange(value, position);

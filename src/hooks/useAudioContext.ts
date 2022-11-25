@@ -1,10 +1,10 @@
 import { createContext, useContext } from "react";
 
-const AudioContext = createContext(new window.AudioContext());
-export const AudioContextProvider = AudioContext.Provider;
+const _AudioContext = createContext(new AudioContext());
+export const AudioContextProvider = _AudioContext.Provider;
 
 const useAudioContext = () => {
-  const context = useContext(AudioContext);
+  const context = useContext(_AudioContext);
 
   return context;
 };

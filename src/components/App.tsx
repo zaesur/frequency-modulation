@@ -1,17 +1,15 @@
-import { FunctionComponent } from "react";
+import { FunctionComponent, useEffect, useRef } from "react";
 import { AudioContextProvider } from "../hooks/useAudioContext";
-import FrequencyVisualizer from "./FrequencyVisualizer";
-import OscillatorController from "./OscillatorController";
+import Synthesizer from "./Synthesizer";
 
-const App: FunctionComponent = () => (
-  <AudioContextProvider value={new AudioContext()}>
-    <FrequencyVisualizer>
-      {(target) => <OscillatorController target={target} />}
-    </FrequencyVisualizer>
-    <FrequencyVisualizer>
-      {(target) => <OscillatorController target={target} />}
-    </FrequencyVisualizer>
-  </AudioContextProvider>
-);
+const App: FunctionComponent = () => {
+  const audioContextRef = useRef(new AudioContext());
+
+  return (
+    <AudioContextProvider value={audioContextRef.current}>
+      <Synthesizer />
+    </AudioContextProvider>
+  );
+};
 
 export default App;
